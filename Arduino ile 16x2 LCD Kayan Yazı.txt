@@ -1,0 +1,49 @@
+#include <Wire.h>
+#include <LiquidCrystal_I2C.h>
+#define mavisol 2
+#define beyazorta 3
+#define yesilsag 4
+LiquidCrystal_I2C lcd(0x27, 16, 2); // LCD ekran nesnesi oluşturuluyor, 0x27 
+adresi ve 16x2 boyutları belirtiliyor.
+void setup() {
+pinMode(mavisol, INPUT_PULLUP); // Sol buton için giriş modu ayarlanıyor ve 
+dahili pull-up direnci etkinleştiriliyor.
+pinMode(beyazorta, INPUT_PULLUP); // Orta buton için giriş modu ayarlanıyor 
+ve dahili pull-up direnci etkinleştiriliyor.
+pinMode(yesilsag, INPUT_PULLUP); // Sağ buton için giriş modu ayarlanıyor ve 
+dahili pull-up direnci etkinleştiriliyor.
+lcd.begin(); // LCD başlatılıyor
+lcd.setCursor(0, 0); // İlk satırın başlangıç konumu ayarlanıyor
+lcd.print("okul fakulte bolum"); // İlk satıra yazı yazılıyor
+lcd.setCursor(0, 1); // İkinci satırın başlangıç konumu ayarlanıyor
+lcd.print("numara DEN 2"); // İkinci satıra yazı yazılıyor
+}
+void loop() {
+lcd.setCursor(0, 0); // İlk satırın başlangıç konumu ayarlanıyor
+lcd.print("okul fakulte bolum"); // İlk satıra yazı yazılıyor
+lcd.setCursor(0, 1); // İkinci satırın başlangıç konumu ayarlanıyor
+lcd.print("numara DEN 2"); // İkinci satıra yazı yazılıyor
+if (digitalRead(mavisol) == HIGH) { // Sol butona basıldığında
+kaydir(-1); // Metni sola kaydırma fonksiyonu çağrılıyor
+delay(200); // Bekleme süresi
+}
+if (digitalRead(beyazorta) == HIGH) { // Orta butona basıldığında
+lcd.clear(); // LCD ekranı temizleniyor
+delay(200); // Bekleme süresi
+}
+if (digitalRead(yesilsag) == HIGH) { // Sağ butona basıldığında
+kaydir(1); // Metni sağa kaydırma fonksiyonu çağrılıyor
+delay(200); // Bekleme süresi
+}
+}
+void kaydir(int adim) { // Metni belirli bir adım kadar kaydırmak için 
+kullanılan fonksiyon
+for (int i = 0; i < abs(adim); i++) { // Adım sayısı kadar döngü
+if (adim < 0) { // Eğer adım negatif ise
+lcd.scrollDisplayLeft(); // Metni sola kaydır
+} else { // Değilse
+lcd.scrollDisplayRight(); // Metni sağa kaydır
+}
+delay(300); // Bir adım kaydırıldıktan sonra bekleniyor
+}
+}
